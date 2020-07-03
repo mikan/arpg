@@ -5,6 +5,7 @@ import (
 	"os/exec"
 	"regexp"
 	"runtime"
+	"strings"
 
 	"fyne.io/fyne"
 	"fyne.io/fyne/app"
@@ -111,5 +112,5 @@ func resolve(ip string) (string, error) {
 	if len(matches) == 0 {
 		return "", errors.New("no data")
 	}
-	return string(matches[0]), nil
+	return strings.ToLower(strings.ReplaceAll(string(matches[0]), "-", ":")), nil
 }
