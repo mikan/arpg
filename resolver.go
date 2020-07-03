@@ -21,7 +21,11 @@ func ip2mac(ip string, adapter adapter) (string, error) {
 		arpCmd = exec.Command("arp", "-i", adapter.name, ip)
 	default:
 		pingCmd = exec.Command("ping", "-I", adapter.name, "-c", "1", ip)
-		arpCmd = exec.Command("arp", "-i", adapter.name, ip)
+		if _, err := exec.LookPath("ip"); err == nil {
+			arpCmd = exec.Command("ip", "neigh", "show", "dev", adapter.name, ip)
+		} else {
+			arpCmd = exec.Command("arp", "-i", adapter.name, ip)
+		}
 	}
 	if err := pingCmd.Run(); err != nil {
 		return "", err
@@ -51,7 +55,11 @@ func mac2ip(mac string, adapter adapter) (string, error) {
 	default:
 		mac = strings.ReplaceAll(strings.ToLower(mac), "-", ":")
 		pingCmd = exec.Command("ping", "-I", adapter.name, "-c", "1", adapter.broadcast, "-b")
-		arpCmd = exec.Command("arp", "-a", "-i", adapter.name)
+		if _, err := exec.LookPath("ip"); err == nil {
+			arpCmd = exec.Command("ip", "neigh", "show", "dev", adapter.name)
+		} else {
+			arpCmd = exec.Command("arp", "-a", "-i", adapter.name)
+		}
 	}
 	if err := pingCmd.Run(); err != nil {
 		fmt.Printf("WARNING: broadcast ping failed: %v\n", err)
