@@ -1,4 +1,4 @@
-module github.com/mikan/arping-gui
+module github.com/mikan/arpg
 
 go 1.14
 

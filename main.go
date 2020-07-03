@@ -15,7 +15,7 @@ var (
 
 func main() {
 	a := app.New()
-	w := a.NewWindow("arping-gui")
+	w := a.NewWindow("ARPG")
 	w.SetMainMenu(newMainMenu(a, w))
 	adapters, err := adapters()
 	if err != nil {

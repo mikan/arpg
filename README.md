@@ -1,7 +1,7 @@
-arping-gui
-==========
+ARPG
+====
 
-A simple arping-like GUI tool written in Go programming language.
+A simple ARP (Address Resolution Protocol) support tool written in Go programming language.
 
 ![screenshot](screenshot.png)
 
@@ -13,7 +13,7 @@ A simple arping-like GUI tool written in Go programming language.
 
 ## Download
 
-See [releases](https://github.com/mikan/arping-gui/releases) page.
+See [releases](https://github.com/mikan/arpg/releases) page.
 
 ## How it works
 
@@ -36,7 +36,7 @@ See [releases](https://github.com/mikan/arping-gui/releases) page.
 
 ## License
 
-arping-gui licensed under the [BSD 3-Clause License](LICENSE).
+ARPG licensed under the [BSD 3-Clause License](LICENSE).
 
 ## Author
 

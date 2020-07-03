@@ -6,7 +6,7 @@ setup: ## Resolve dependencies using Go Modules
 
 .PHONY: clean
 clean: ## Remove build artifact directory
-	-rm -rfv arping-gui*
+	-rm -rfv arpg*
 
 .PHONY: lint
 lint: ## Run static code analysis
@@ -26,7 +26,7 @@ build-linux: ## Build linux package
 build-mac: ## Build mac package
 	command -v fyne >/dev/null 2>&1 || { go get -u fyne.io/fyne/cmd/fyne; }
 	fyne package -os darwin -icon icon.png -release
-	zip -r arping-gui_macos.zip arping-gui.app
+	zip -r arpg_macos.zip arpg.app
 
 .PHONY: build-win
 build-win: ## Build windows package
