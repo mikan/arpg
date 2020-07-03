@@ -21,13 +21,13 @@ See [releases](https://github.com/mikan/arping-gui/releases) page.
 
 1. Check available network adapter information (e.g. eth0)
 2. Send ICMP ping to the target using native `ping` command
-3. Lookup ARP table using native `arp` command
+3. Lookup ARP table using native `arp` (`ip`) command
 
 ### MAC to IP
 
 1. Check available network adapter information (e.g. eth0)
 2. Send ICMP ping to the *broadcast* address using native `ping` command
-3. Lookup ARP table using native `arp` command
+3. Lookup ARP table using native `arp` (`ip`) command
 
 ## Limitations
 
