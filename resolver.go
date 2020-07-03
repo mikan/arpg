@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"bytes"
 	"errors"
+	"fmt"
 	"os/exec"
 	"runtime"
 	"strings"
@@ -53,7 +54,7 @@ func mac2ip(mac string, adapter adapter) (string, error) {
 		arpCmd = exec.Command("arp", "-a", "-i", adapter.name)
 	}
 	if err := pingCmd.Run(); err != nil {
-		return "", err
+		fmt.Printf("WARNING: broadcast ping failed: %v\n", err)
 	}
 	arpOut, err := arpCmd.Output()
 	if err != nil {
