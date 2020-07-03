@@ -23,8 +23,8 @@ func main() {
 	}
 	w.SetContent(
 		widget.NewTabContainer(
-			widget.NewTabItem("MAC to IP", newIP2MACTab(w, adapters)),
-			widget.NewTabItem("IP to MAC", newMAC2IPTab(w, adapters)),
+			widget.NewTabItem("IP to MAC", newIP2MACTab(w, adapters)),
+			widget.NewTabItem("MAC to IP", newMAC2IPTab(w, adapters)),
 		),
 	)
 	w.ShowAndRun()
