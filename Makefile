@@ -10,7 +10,7 @@ clean: ## Remove build artifact directory
 
 .PHONY: lint
 lint: ## Run static code analysis
-	command -v golint >/dev/null 2>&1 || { go get -u golang.org/x/lint/golint; }
+	command -v golint >/dev/null 2>&1 || { go get golang.org/x/lint/golint; }
 	golint -set_exit_status ./...
 
 .PHONY: run
@@ -19,18 +19,18 @@ run: ## Run app locally
 
 .PHONY: build-linux
 build-linux: ## Build linux package
-	command -v fyne >/dev/null 2>&1 || { go get -u fyne.io/fyne/cmd/fyne; }
+	command -v fyne >/dev/null 2>&1 || { go get fyne.io/fyne/cmd/fyne; }
 	fyne package -os linux -icon icon.png -release
 
 .PHONY: build-mac
 build-mac: ## Build mac package
-	command -v fyne >/dev/null 2>&1 || { go get -u fyne.io/fyne/cmd/fyne; }
+	command -v fyne >/dev/null 2>&1 || { go get fyne.io/fyne/cmd/fyne; }
 	fyne package -os darwin -icon icon.png -release
 	zip -r arpg_macos.zip arpg.app
 
 .PHONY: build-win
 build-win: ## Build windows package
-	command -v fyne >/dev/null 2>&1 || { go get -u fyne.io/fyne/cmd/fyne; }
+	if not exist fyne go get fyne.io/fyne/cmd/fyne
 	fyne package -os windows -icon icon.png -release
 
 .PHONY: help
