@@ -8,7 +8,6 @@ import (
 	"os/exec"
 	"runtime"
 	"strings"
-	"syscall"
 )
 
 func ip2mac(ip string, adapter adapter) (string, error) {
@@ -16,9 +15,9 @@ func ip2mac(ip string, adapter adapter) (string, error) {
 	switch runtime.GOOS {
 	case "windows":
 		pingCmd = exec.Command("ping", "-n", "1", ip)
-		pingCmd.SysProcAttr = &syscall.SysProcAttr{HideWindow: true}
+		prepareBackgroundCommand(pingCmd)
 		arpCmd = exec.Command("arp", "-a", ip, "-N", adapter.ip)
-		arpCmd.SysProcAttr = &syscall.SysProcAttr{HideWindow: true}
+		prepareBackgroundCommand(arpCmd)
 	case "darwin":
 		pingCmd = exec.Command("ping", "-b", adapter.name, "-c", "1", ip)
 		arpCmd = exec.Command("arp", "-i", adapter.name, ip)
@@ -50,9 +49,9 @@ func mac2ip(mac string, adapter adapter) (string, error) {
 	case "windows":
 		mac = strings.ReplaceAll(strings.ToLower(mac), ":", "-")
 		pingCmd = exec.Command("ping", "-n", "1", adapter.broadcast)
-		pingCmd.SysProcAttr = &syscall.SysProcAttr{HideWindow: true}
+		prepareBackgroundCommand(pingCmd)
 		arpCmd = exec.Command("arp", "-a", "-N", adapter.ip)
-		arpCmd.SysProcAttr = &syscall.SysProcAttr{HideWindow: true}
+		prepareBackgroundCommand(arpCmd)
 	case "darwin":
 		mac = strings.ReplaceAll(strings.ToLower(mac), "-", ":")
 		pingCmd = exec.Command("ping", "-b", adapter.name, "-c", "1", adapter.broadcast)
@@ -86,4 +85,8 @@ func mac2ip(mac string, adapter adapter) (string, error) {
 		return matches[0], nil
 	}
 	return "", errors.New("no data")
+}
+
+func prepareBackgroundCommand(_ *exec.Cmd) {
+	// no-op
 }
