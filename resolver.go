@@ -86,7 +86,3 @@ func mac2ip(mac string, adapter adapter) (string, error) {
 	}
 	return "", errors.New("no data")
 }
-
-func prepareBackgroundCommand(_ *exec.Cmd) {
-	// no-op
-}
