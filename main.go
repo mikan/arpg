@@ -14,6 +14,7 @@ var (
 )
 
 func main() {
+	overwriteFyneFont()
 	a := app.New()
 	w := a.NewWindow("ARPG")
 	w.SetMainMenu(newMainMenu(a, w))
