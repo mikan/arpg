@@ -4,9 +4,10 @@ import (
 	"fmt"
 	"net/url"
 
-	"fyne.io/fyne"
-	"fyne.io/fyne/dialog"
-	"fyne.io/fyne/widget"
+	"fyne.io/fyne/v2"
+	"fyne.io/fyne/v2/container"
+	"fyne.io/fyne/v2/dialog"
+	"fyne.io/fyne/v2/widget"
 )
 
 func newMainMenu(a fyne.App, w fyne.Window) *fyne.MainMenu {
@@ -17,12 +18,12 @@ func newMainMenu(a fyne.App, w fyne.Window) *fyne.MainMenu {
 	return fyne.NewMainMenu(
 		fyne.NewMenu("File", fyne.NewMenuItem("Quit", func() { a.Quit() })),
 		fyne.NewMenu("Help", fyne.NewMenuItem("About...", func() {
-			dialog.NewCustom("About", "OK", widget.NewVBox(
+			dialog.NewCustom("About", "OK", container.NewVBox(
 				widget.NewHyperlinkWithStyle("ARPG", homepage, fyne.TextAlignCenter, boldText),
 				widget.NewLabelWithStyle("A simple ARP support tool", fyne.TextAlignCenter, italicText),
 				widget.NewLabelWithStyle("Licensed under the", fyne.TextAlignCenter, normalText),
 				widget.NewLabelWithStyle("BSD 3-Clause", fyne.TextAlignCenter, normalText),
-			), w)
+			), w).Show()
 		})),
 	)
 }

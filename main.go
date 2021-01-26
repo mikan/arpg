@@ -3,9 +3,9 @@ package main
 import (
 	"regexp"
 
-	"fyne.io/fyne/app"
-	"fyne.io/fyne/dialog"
-	"fyne.io/fyne/widget"
+	"fyne.io/fyne/v2/app"
+	"fyne.io/fyne/v2/container"
+	"fyne.io/fyne/v2/dialog"
 )
 
 var (
@@ -20,12 +20,12 @@ func main() {
 	w.SetMainMenu(newMainMenu(a, w))
 	adapters, err := adapters()
 	if err != nil {
-		dialog.NewError(err, w)
+		dialog.NewError(err, w).Show()
 	}
 	w.SetContent(
-		widget.NewTabContainer(
-			widget.NewTabItem("IP to MAC", newIP2MACTab(w, adapters)),
-			widget.NewTabItem("MAC to IP", newMAC2IPTab(w, adapters)),
+		container.NewAppTabs(
+			container.NewTabItem("IP to MAC", newIP2MACTab(w, adapters)),
+			container.NewTabItem("MAC to IP", newMAC2IPTab(w, adapters)),
 		),
 	)
 	w.ShowAndRun()

@@ -19,19 +19,19 @@ run: ## Run app locally
 
 .PHONY: build-linux
 build-linux: ## Build linux package
-	command -v fyne >/dev/null 2>&1 || { go get fyne.io/fyne/cmd/fyne; }
-	fyne package -os linux -icon icon.png -release
+	command -v fyne >/dev/null 2>&1 || { go get fyne.io/fyne/v2/cmd/fyne; }
+	fyne package -os linux -icon icon.png -release -appID com.github.mikan.arpg
 
 .PHONY: build-mac
 build-mac: ## Build mac package
-	command -v fyne >/dev/null 2>&1 || { go get fyne.io/fyne/cmd/fyne; }
-	fyne package -os darwin -icon icon.png -release
+	command -v fyne >/dev/null 2>&1 || { go get fyne.io/fyne/v2/cmd/fyne; }
+	fyne package -os darwin -icon icon.png -release -appID com.github.mikan.arpg
 	zip -r arpg_macos.zip arpg.app
 
 .PHONY: build-win
 build-win: ## Build windows package
-	if not exist fyne go get fyne.io/fyne/cmd/fyne
-	fyne package -os windows -icon icon.png -release
+	if not exist %GOPATH%\bin\fyne go get fyne.io/fyne/v2/cmd/fyne
+	fyne package -os windows -icon icon.png -release -appID com.github.mikan.arpg
 
 .PHONY: help
 help:
