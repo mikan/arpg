@@ -1,8 +1,9 @@
 package main
 
 import (
-	"fyne.io/fyne"
-	"fyne.io/fyne/widget"
+	"fyne.io/fyne/v2"
+	"fyne.io/fyne/v2/container"
+	"fyne.io/fyne/v2/widget"
 )
 
 func newMAC2IPTab(w fyne.Window, adapters []adapter) fyne.CanvasObject {
@@ -21,7 +22,7 @@ func newMAC2IPTab(w fyne.Window, adapters []adapter) fyne.CanvasObject {
 		ipCopyButton.Disable()
 		ipCopyButton.SetText("Copied!")
 	})
-	ipResult := widget.NewVBox(
+	ipResult := container.NewVBox(
 		widget.NewLabel("IP address:"),
 		ipEntry,
 		ipCopyButton,
@@ -60,7 +61,7 @@ func newMAC2IPTab(w fyne.Window, adapters []adapter) fyne.CanvasObject {
 	}
 
 	// layout
-	return widget.NewVBox(
+	return container.NewVBox(
 		widget.NewLabel("Target MAC address:"),
 		macEntry,
 		widget.NewLabel("Network adapter:"),
