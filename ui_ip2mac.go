@@ -8,11 +8,23 @@ import (
 
 func newIP2MACTab(w fyne.Window, adapters []adapter) fyne.CanvasObject {
 	// adapter select
+	adapterLabel := widget.NewLabel("Network adapter:")
 	adapterNames := adapterNames(adapters)
 	adapterEntry := widget.NewSelectEntry(adapterNames)
 	if len(adapterNames) > 0 {
 		adapterEntry.SetText(adapterNames[0])
 	}
+	adapterEntry.Disable()
+	adapterAuto := true
+	adapterAutoCheck := widget.NewCheck("Auto", func(checked bool) {
+		adapterAuto = checked
+		if checked {
+			adapterEntry.Disable()
+		} else {
+			adapterEntry.Enable()
+		}
+	})
+	adapterAutoCheck.SetChecked(true)
 
 	// result box
 	macEntry := widget.NewEntry()
@@ -40,7 +52,13 @@ func newIP2MACTab(w fyne.Window, adapters []adapter) fyne.CanvasObject {
 			resolveButton.Enable()
 			resolveButton.SetText("Resolve")
 		}()
-		mac, err := ip2mac(ipEntry.Text, findAdapter(adapters, adapterEntry.Text))
+		var mac string
+		var err error
+		if adapterAuto {
+			mac, err = ip2macWithoutAdapterSelect(ipEntry.Text)
+		} else {
+			mac, err = ip2mac(ipEntry.Text, findAdapter(adapters, adapterEntry.Text))
+		}
 		if err != nil {
 			macEntry.SetText("ERROR: " + err.Error())
 		} else {
@@ -64,7 +82,8 @@ func newIP2MACTab(w fyne.Window, adapters []adapter) fyne.CanvasObject {
 	return container.NewVBox(
 		widget.NewLabel("Target IP address:"),
 		ipEntry,
-		widget.NewLabel("Network adapter:"),
+		adapterLabel,
+		adapterAutoCheck,
 		adapterEntry,
 		resolveButton,
 		macResult,
