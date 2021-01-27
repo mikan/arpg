@@ -15,9 +15,7 @@ func newIP2MACTab(w fyne.Window, adapters []adapter) fyne.CanvasObject {
 		adapterEntry.SetText(adapterNames[0])
 	}
 	adapterEntry.Disable()
-	adapterAuto := true
 	adapterAutoCheck := widget.NewCheck("Auto", func(checked bool) {
-		adapterAuto = checked
 		if checked {
 			adapterEntry.Disable()
 		} else {
@@ -54,7 +52,7 @@ func newIP2MACTab(w fyne.Window, adapters []adapter) fyne.CanvasObject {
 		}()
 		var mac string
 		var err error
-		if adapterAuto {
+		if adapterAutoCheck.Checked {
 			mac, err = ip2macWithoutAdapterSelect(ipEntry.Text)
 		} else {
 			mac, err = ip2mac(ipEntry.Text, findAdapter(adapters, adapterEntry.Text))
