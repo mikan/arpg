@@ -10,7 +10,40 @@ import (
 	"strings"
 )
 
-func ip2mac(ip string, adapter adapter) (string, error) {
+func ip2mac(ip string) (string, error) {
+	var pingCmd, arpCmd *exec.Cmd
+	switch runtime.GOOS {
+	case "windows":
+		pingCmd = exec.Command("ping", "-n", "1", ip)
+		prepareBackgroundCommand(pingCmd)
+		arpCmd = exec.Command("arp", "-a", ip)
+		prepareBackgroundCommand(arpCmd)
+	case "darwin":
+		pingCmd = exec.Command("ping", "-c", "1", ip)
+		arpCmd = exec.Command("arp", ip)
+	default:
+		pingCmd = exec.Command("ping", "-c", "1", ip)
+		if _, err := exec.LookPath("ip"); err == nil {
+			arpCmd = exec.Command("ip", "neigh", "show", ip)
+		} else {
+			arpCmd = exec.Command("arp", "-i", ip)
+		}
+	}
+	if err := pingCmd.Run(); err != nil {
+		return "", fmt.Errorf("%s: %w", pingCmd.Path, err)
+	}
+	mac, err := arpCmd.Output()
+	if err != nil {
+		return "", fmt.Errorf("%s: %w", arpCmd.Path, err)
+	}
+	matches := macPattern.FindAll(mac, -1)
+	if len(matches) == 0 {
+		return "", errors.New("no data")
+	}
+	return strings.ReplaceAll(strings.ToLower(string(matches[0])), "-", ":"), nil
+}
+
+func ip2macWithAdapter(ip string, adapter adapter) (string, error) {
 	var pingCmd, arpCmd *exec.Cmd
 	switch runtime.GOOS {
 	case "windows":
@@ -30,11 +63,11 @@ func ip2mac(ip string, adapter adapter) (string, error) {
 		}
 	}
 	if err := pingCmd.Run(); err != nil {
-		return "", err
+		return "", fmt.Errorf("%s: %w", pingCmd.Path, err)
 	}
 	mac, err := arpCmd.Output()
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("%s: %w", arpCmd.Path, err)
 	}
 	matches := macPattern.FindAll(mac, -1)
 	if len(matches) == 0 {
