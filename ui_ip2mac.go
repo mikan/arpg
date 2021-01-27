@@ -8,7 +8,6 @@ import (
 
 func newIP2MACTab(w fyne.Window, adapters []adapter) fyne.CanvasObject {
 	// adapter select
-	adapterLabel := widget.NewLabel("Network adapter:")
 	adapterNames := adapterNames(adapters)
 	adapterEntry := widget.NewSelectEntry(adapterNames)
 	if len(adapterNames) > 0 {
@@ -53,9 +52,9 @@ func newIP2MACTab(w fyne.Window, adapters []adapter) fyne.CanvasObject {
 		var mac string
 		var err error
 		if adapterAutoCheck.Checked {
-			mac, err = ip2macWithoutAdapterSelect(ipEntry.Text)
+			mac, err = ip2mac(ipEntry.Text)
 		} else {
-			mac, err = ip2mac(ipEntry.Text, findAdapter(adapters, adapterEntry.Text))
+			mac, err = ip2macWithAdapter(ipEntry.Text, findAdapter(adapters, adapterEntry.Text))
 		}
 		if err != nil {
 			macEntry.SetText("ERROR: " + err.Error())
@@ -80,7 +79,7 @@ func newIP2MACTab(w fyne.Window, adapters []adapter) fyne.CanvasObject {
 	return container.NewVBox(
 		widget.NewLabel("Target IP address:"),
 		ipEntry,
-		adapterLabel,
+		widget.NewLabel("Network adapter:"),
 		adapterAutoCheck,
 		adapterEntry,
 		resolveButton,
