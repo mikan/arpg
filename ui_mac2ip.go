@@ -1,6 +1,9 @@
 package main
 
 import (
+	"fmt"
+	"time"
+
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/widget"
@@ -14,6 +17,11 @@ func newMAC2IPTab(w fyne.Window, adapters []adapter) fyne.CanvasObject {
 		adapterEntry.SetText(adapterNames[0])
 	}
 
+	// log pane
+	logPaneLabel.Hide()
+	logPane.Disable()
+	logPane.Hide()
+
 	// result box
 	ipEntry := widget.NewEntry()
 	var ipCopyButton *widget.Button
@@ -21,6 +29,8 @@ func newMAC2IPTab(w fyne.Window, adapters []adapter) fyne.CanvasObject {
 		w.Clipboard().SetContent(ipEntry.Text)
 		ipCopyButton.Disable()
 		ipCopyButton.SetText("Copied!")
+		logContent = fmt.Sprintf("[%s]\nCP: %s\n\n%s", time.Now().Format(logTimeFormat), ipEntry.Text, logContent)
+		logPane.SetText(logContent)
 	})
 	ipResult := container.NewVBox(
 		widget.NewLabel("IP address:"),
@@ -40,11 +50,19 @@ func newMAC2IPTab(w fyne.Window, adapters []adapter) fyne.CanvasObject {
 			resolveButton.Enable()
 			resolveButton.SetText("Resolve")
 		}()
-		ip, err := mac2ip(macEntry.Text, findAdapter(adapters, adapterEntry.Text))
+		mac := macEntry.Text
+		ip, err := mac2ip(mac, findAdapter(adapters, adapterEntry.Text))
 		if err != nil {
 			ipEntry.SetText("ERROR: " + err.Error())
+			logContent = fmt.Sprintf("[%s]\n%s = ERROR\n\n%s", time.Now().Format(logTimeFormat), mac, logContent)
 		} else {
 			ipEntry.SetText(ip)
+			logContent = fmt.Sprintf("[%s]\n%s >\n%s\n\n%s", time.Now().Format(logTimeFormat), mac, ip, logContent)
+		}
+		logPane.SetText(logContent)
+		if logPane.Hidden {
+			logPaneLabel.Show()
+			logPane.Show()
 		}
 		ipCopyButton.SetText("Copy to clipboard")
 		ipCopyButton.Enable()
@@ -68,5 +86,7 @@ func newMAC2IPTab(w fyne.Window, adapters []adapter) fyne.CanvasObject {
 		adapterEntry,
 		resolveButton,
 		ipResult,
+		logPaneLabel,
+		logPane,
 	)
 }
