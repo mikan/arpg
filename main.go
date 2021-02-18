@@ -3,6 +3,7 @@ package main
 import (
 	"regexp"
 
+	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/dialog"
@@ -18,6 +19,7 @@ func main() {
 	a := app.New()
 	w := a.NewWindow("ARPG")
 	w.SetMainMenu(newMainMenu(a, w))
+	w.Resize(fyne.NewSize(350, 500))
 	adapters, err := adapters()
 	if err != nil {
 		dialog.NewError(err, w).Show()
