@@ -54,10 +54,10 @@ func newMAC2IPTab(w fyne.Window, adapters []adapter) fyne.CanvasObject {
 		ip, err := mac2ip(mac, findAdapter(adapters, adapterEntry.Text))
 		if err != nil {
 			ipEntry.SetText("ERROR: " + err.Error())
-			logContent = fmt.Sprintf("[%s]\n%s = ERROR\n\n%s", time.Now().Format(logTimeFormat), mac, logContent)
+			logContent = fmt.Sprintf("[%s]\n%s > ERROR\n\n%s", time.Now().Format(logTimeFormat), mac, logContent)
 		} else {
 			ipEntry.SetText(ip)
-			logContent = fmt.Sprintf("[%s]\n%s >\n%s\n\n%s", time.Now().Format(logTimeFormat), mac, ip, logContent)
+			logContent = fmt.Sprintf("[%s]\n%s > %s\n\n%s", time.Now().Format(logTimeFormat), mac, ip, logContent)
 		}
 		logPane.SetText(logContent)
 		if logPane.Hidden {
