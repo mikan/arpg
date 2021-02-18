@@ -27,12 +27,9 @@ func newIP2MACTab(w fyne.Window, adapters []adapter) fyne.CanvasObject {
 	adapterAutoCheck.SetChecked(true)
 
 	// log pane
-	logPaneLabel := widget.NewLabel("Log:")
 	logPaneLabel.Hide()
-	logPane := widget.NewMultiLineEntry()
 	logPane.Disable()
 	logPane.Hide()
-	var logContent string
 
 	// result box
 	macEntry := widget.NewEntry()

@@ -18,12 +18,9 @@ func newMAC2IPTab(w fyne.Window, adapters []adapter) fyne.CanvasObject {
 	}
 
 	// log pane
-	logPaneLabel := widget.NewLabel("Log:")
 	logPaneLabel.Hide()
-	logPane := widget.NewMultiLineEntry()
 	logPane.Disable()
 	logPane.Hide()
-	var logContent string
 
 	// result box
 	ipEntry := widget.NewEntry()

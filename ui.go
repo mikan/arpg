@@ -12,9 +12,12 @@ import (
 const logTimeFormat = "2006/01/02 15:04:05"
 
 var (
-	normalText = fyne.TextStyle{}
-	boldText   = fyne.TextStyle{Bold: true}
-	italicText = fyne.TextStyle{Italic: true}
+	normalText   = fyne.TextStyle{}
+	boldText     = fyne.TextStyle{Bold: true}
+	italicText   = fyne.TextStyle{Italic: true}
+	logPaneLabel = widget.NewLabel("Log:")
+	logPane      = widget.NewMultiLineEntry()
+	logContent   string
 )
 
 type enterEntry struct {
