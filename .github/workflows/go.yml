@@ -31,7 +31,7 @@ jobs:
       - name: Install cli (windows)
         if: runner.os == 'Windows'
         run: |
-          set GOBIN=%CD%\bin
+          $Env:GOBIN="$pwd\bin"
           go get golang.org/x/lint/golint
           go get fyne.io/fyne/v2/cmd/fyne
       - name: Build
