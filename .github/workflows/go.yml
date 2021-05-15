@@ -23,36 +23,23 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install gcc libgl1-mesa-dev libegl1-mesa-dev libgles2-mesa-dev libx11-dev xorg-dev
-      - name: Install cli (non-windows)
-        if: runner.os != 'Windows'
+      - name: Install cli
         run: |
-          GOBIN=$PWD/bin go get golang.org/x/lint/golint
-          GOBIN=$PWD/bin go get fyne.io/fyne/v2/cmd/fyne
-      - name: Install cli (windows)
-        if: runner.os == 'Windows'
-        run: |
-          $Env:GOBIN="$pwd\bin"
           go get golang.org/x/lint/golint
           go get fyne.io/fyne/v2/cmd/fyne
       - name: Build
         run: |
           go build -v .
-      - name: Lint (non-windows)
-        if: runner.os != 'Windows'
+      - name: Lint
         run: |
           go vet ./...
-          ./bin/golint -set_exit_status ./...
-      - name: Lint (windows)
-        if: runner.os == 'Windows'
-        run: |
-          go vet ./...
-          bin/golint -set_exit_status ./...
+          golint -set_exit_status ./...
       - name: Packaging (windows)
         if: runner.os == 'Windows'
-        run: bin\fyne package -os windows -icon icon.png -release -appID com.github.mikan.arpg
+        run: fyne package -os windows -icon icon.png -release -appID com.github.mikan.arpg
       - name: Packaging (macos)
         if: runner.os == 'macOS'
-        run: ./bin/fyne package -os darwin -icon icon.png -release -appID com.github.mikan.arpg
+        run: fyne package -os darwin -icon icon.png -release -appID com.github.mikan.arpg
       - name: Packaging (linux)
         if: runner.os == 'Linux'
-        run: ./bin/fyne package -os linux -icon icon.png -release -appID com.github.mikan.arpg
+        run: fyne package -os linux -icon icon.png -release -appID com.github.mikan.arpg
