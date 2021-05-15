@@ -35,12 +35,12 @@ jobs:
       - name: Install cli (non-windows)
         if: matrix.target != 'windows-amd64'
         run: |
-          GOBIN=$PWD go get golang.org/x/lint/golint
-          GOBIN=$PWD go get fyne.io/fyne/v2/cmd/fyne
+          GOBIN=$PWD/bin go get golang.org/x/lint/golint
+          GOBIN=$PWD/bin go get fyne.io/fyne/v2/cmd/fyne
       - name: Install cli (windows)
         if: matrix.target == 'windows-amd64'
         run: |
-          set GOBIN=%CD%
+          set GOBIN=%CD%\bin
           go get golang.org/x/lint/golint
           go get fyne.io/fyne/v2/cmd/fyne
       - name: Build
@@ -49,13 +49,13 @@ jobs:
       - name: Lint
         run: |
           go vet ./...
-          golint -set_exit_status ./...
+          ./bin/golint -set_exit_status ./...
       - name: Packaging (windows)
         if: matrix.target == 'windows-amd64'
-        run: fyne package -os windows -icon icon.png -release -appID com.github.mikan.arpg
+        run: bin\fyne package -os windows -icon icon.png -release -appID com.github.mikan.arpg
       - name: Packaging (macos)
         if: matrix.target == 'macos-amd64'
-        run: fyne package -os darwin -icon icon.png -release -appID com.github.mikan.arpg
+        run: ./bin/fyne package -os darwin -icon icon.png -release -appID com.github.mikan.arpg
       - name: Packaging (linux)
         if: matrix.target == 'linux-amd64'
-        run: fyne package -os linux -icon icon.png -release -appID com.github.mikan.arpg
+        run: ./bin/fyne package -os linux -icon icon.png -release -appID com.github.mikan.arpg
