@@ -50,11 +50,11 @@ jobs:
           go vet ./...
           golint -set_exit_status ./...
       - name: Packaging (windows)
-        if: matrix.target == "windows-amd64"
+        if: matrix.target == 'windows-amd64'
         run: fyne package -os windows -icon icon.png -release -appID com.github.mikan.arpg
       - name: Packaging (macos)
-        if: matrix.target == "macos-amd64"
+        if: matrix.target == 'macos-amd64'
         run: fyne package -os darwin -icon icon.png -release -appID com.github.mikan.arpg
       - name: Packaging (linux)
-        if: matrix.target == "linux-amd64"
+        if: matrix.target == 'linux-amd64'
         run: fyne package -os linux -icon icon.png -release -appID com.github.mikan.arpg
