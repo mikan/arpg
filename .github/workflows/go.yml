@@ -9,36 +9,27 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        target:
-          - windows-amd64
-          - macos-amd64
-          - linux-amd64
-        include:
-          - target: windows-amd64
-            os: windows-latest
-          - target: macos-amd64
-            os: macos-latest
-          - target: linux-amd64
-            os: ubuntu-latest
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        go-version: [1.16]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
       - name: Set up Go
         uses: actions/setup-go@v2
         with:
-          go-version: 1.16
-      - name: Install lib (linux)
-        if: matrix.target == 'linux-amd64'
+          go-version: ${{ matrix.go-version }}
+      - name: Install deb package (linux)
+        if: runner.os == 'Linux'
         run: |
           sudo apt-get update
           sudo apt-get install gcc libgl1-mesa-dev libegl1-mesa-dev libgles2-mesa-dev libx11-dev xorg-dev
       - name: Install cli (non-windows)
-        if: matrix.target != 'windows-amd64'
+        if: runner.os != 'Windows'
         run: |
           GOBIN=$PWD/bin go get golang.org/x/lint/golint
           GOBIN=$PWD/bin go get fyne.io/fyne/v2/cmd/fyne
       - name: Install cli (windows)
-        if: matrix.target == 'windows-amd64'
+        if: runner.os == 'Windows'
         run: |
           set GOBIN=%CD%\bin
           go get golang.org/x/lint/golint
@@ -46,16 +37,22 @@ jobs:
       - name: Build
         run: |
           go build -v .
-      - name: Lint
+      - name: Lint (non-windows)
+        if: runner.os != 'Windows'
         run: |
           go vet ./...
           ./bin/golint -set_exit_status ./...
+      - name: Lint (windows)
+        if: runner.os == 'Windows'
+        run: |
+          go vet ./...
+          bin/golint -set_exit_status ./...
       - name: Packaging (windows)
-        if: matrix.target == 'windows-amd64'
+        if: runner.os == 'Windows'
         run: bin\fyne package -os windows -icon icon.png -release -appID com.github.mikan.arpg
       - name: Packaging (macos)
-        if: matrix.target == 'macos-amd64'
+        if: runner.os == 'macOS'
         run: ./bin/fyne package -os darwin -icon icon.png -release -appID com.github.mikan.arpg
       - name: Packaging (linux)
-        if: matrix.target == 'linux-amd64'
+        if: runner.os == 'Linux'
         run: ./bin/fyne package -os linux -icon icon.png -release -appID com.github.mikan.arpg
