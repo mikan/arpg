@@ -19,7 +19,7 @@ jobs:
           - target: macos-amd64
             os: macos-latest
           - target: linux-amd64
-            os: linux-latest
+            os: ubuntu-latest
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
