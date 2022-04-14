@@ -10,7 +10,7 @@ clean: ## Remove build artifact directory
 
 .PHONY: lint
 lint: ## Run static code analysis
-	command -v golint >/dev/null 2>&1 || { go get golang.org/x/lint/golint; }
+	command -v golint >/dev/null 2>&1 || { go install golang.org/x/lint/golint@latest; }
 	golint -set_exit_status ./...
 
 .PHONY: run
@@ -19,18 +19,18 @@ run: ## Run app locally
 
 .PHONY: build-linux
 build-linux: ## Build linux package
-	command -v fyne >/dev/null 2>&1 || { go get fyne.io/fyne/v2/cmd/fyne; }
+	command -v fyne >/dev/null 2>&1 || { go install fyne.io/fyne/v2/cmd/fyne@latest; }
 	fyne package -os linux -icon icon.png -release -appID com.github.mikan.arpg
 
 .PHONY: build-mac
 build-mac: ## Build mac package
-	command -v fyne >/dev/null 2>&1 || { go get fyne.io/fyne/v2/cmd/fyne; }
+	command -v fyne >/dev/null 2>&1 || { go install fyne.io/fyne/v2/cmd/fyne@latest; }
 	fyne package -os darwin -icon icon.png -release -appID com.github.mikan.arpg
 	zip -r arpg_macos.zip arpg.app
 
 .PHONY: build-win
 build-win: ## Build windows package
-	if not exist %GOPATH%\bin\fyne go get fyne.io/fyne/v2/cmd/fyne
+	if not exist %GOPATH%\bin\fyne go install fyne.io/fyne/v2/cmd/fyne@latest
 	fyne package -os windows -icon icon.png -release -appID com.github.mikan.arpg
 
 .PHONY: help
